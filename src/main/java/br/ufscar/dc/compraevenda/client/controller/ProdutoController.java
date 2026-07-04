@@ -23,7 +23,7 @@ public class ProdutoController {
             List<Produto> produtos = produtoService.listarTodos();
             model.addAttribute("produtos", produtos);
         } catch (Exception e) {
-            model.addAttribute("error", "Erro ao carregar produtos: " + e.getMessage());
+            model.addAttribute("error", "❌ Erro ao carregar produtos: " + e.getMessage());
         }
         return "index";
     }
@@ -34,7 +34,7 @@ public class ProdutoController {
             Produto produto = produtoService.buscarPorId(id);
             model.addAttribute("produto", produto);
         } catch (Exception e) {
-            model.addAttribute("error", "Erro ao carregar produto: " + e.getMessage());
+            model.addAttribute("error", "❌ Erro ao carregar produto: " + e.getMessage());
             return "redirect:/produtos";
         }
         return "produtos/detalhe";
@@ -63,7 +63,7 @@ public class ProdutoController {
             Produto produto = produtoService.buscarPorId(id);
             model.addAttribute("produto", produto);
         } catch (Exception e) {
-            model.addAttribute("error", "Erro ao carregar produto: " + e.getMessage());
+            model.addAttribute("error", "❌ Erro ao carregar produto: " + e.getMessage());
             return "redirect:/produtos";
         }
         return "produtos/editar";
@@ -79,6 +79,7 @@ public class ProdutoController {
         }
         return "redirect:/produtos";
     }
+
 
     @PostMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id, RedirectAttributes redirect) {
