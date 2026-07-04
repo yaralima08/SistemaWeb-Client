@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Produto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+        .header { background: linear-gradient(135deg, #6C63FF 0%, #8B7FFF 100%); color: white; padding: 1.5rem; text-align: center; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.7rem; border: 2px solid #DFE6E9; border-radius: 8px; }
+        .form-group input:focus, .form-group select:focus { border-color: #6C63FF; outline: none; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .btn { padding: 0.7rem 2rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; }
+        .btn-primary { background: #6C63FF; color: white; }
+        .btn-outline { background: transparent; border: 2px solid #DFE6E9; }
+        .form-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👗 StyleStore Client</h1>
+        <p>Cadastrar Novo Produto</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Novo Produto</h2>
+            <form th:action="@{/produtos}" th:object="${produto}" method="post">
+                <div class="form-group">
+                    <label>Nome do Produto</label>
+                    <input type="text" th:field="*{nome}" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select th:field="*{categoria}" required>
+                            <option value="">Selecione...</option>
+                            <option value="FEMININO">Feminino</option>
+                            <option value="MASCULINO">Masculino</option>
+                            <option value="INFANTIL">Infantil</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tamanho</label>
+                        <select th:field="*{tamanho}" required>
+                            <option value="">Selecione...</option>
+                            <option value="PP">PP</option>
+                            <option value="P">P</option>
+                            <option value="M">M</option>
+                            <option value="G">G</option>
+                            <option value="GG">GG</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cor</label>
+                        <select th:field="*{cor}" required>
+                            <option value="">Selecione...</option>
+                            <option value="BRANCO">Branco</option>
+                            <option value="PRETO">Preto</option>
+                            <option value="AZUL">Azul</option>
+                            <option value="VERMELHO">Vermelho</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade</label>
+                        <input type="number" th:field="*{quantidadeEstoque}" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Preço</label>
+                    <input type="number" th:field="*{preco}" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea th:field="*{descricao}" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="/produtos" class="btn btn-outline">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

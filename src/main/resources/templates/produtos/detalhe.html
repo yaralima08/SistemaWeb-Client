@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Produto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+        .header { background: linear-gradient(135deg, #6C63FF 0%, #8B7FFF 100%); color: white; padding: 1.5rem; text-align: center; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .product-detail img { width: 100%; height: 400px; object-fit: cover; border-radius: 12px; }
+        .product-info h1 { font-size: 2rem; }
+        .product-info .preco { font-size: 2rem; font-weight: 700; color: #6C63FF; }
+        .btn { padding: 0.7rem 2rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #6C63FF; color: white; }
+        .btn-outline { background: transparent; border: 2px solid #DFE6E9; color: #636E72; }
+        .btn-danger { background: #FF4757; color: white; }
+        .actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .back-link { display: block; margin-top: 2rem; color: #6C63FF; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👗 StyleStore Client</h1>
+        <p>Detalhes do Produto</p>
+    </div>
+
+    <div class="container">
+        <a href="/produtos" class="back-link">← Voltar para produtos</a>
+
+        <div class="card">
+            <div class="product-detail">
+                <div>
+                    <img th:if="${produto.imagens != null && !produto.imagens.isEmpty()}" 
+                         th:src="${produto.imagens[0]}" 
+                         th:alt="${produto.nome}">
+                    <img th:unless="${produto.imagens != null && !produto.imagens.isEmpty()}" 
+                         src="https://via.placeholder.com/600x400/DFE6E9/636E72?text=Sem+Imagem">
+                </div>
+
+                <div class="product-info">
+                    <h1 th:text="${produto.nome}">Nome</h1>
+                    <p><span th:text="${produto.categoria}">Categoria</span> · <span th:text="${produto.tamanho}">Tamanho</span> · <span th:text="${produto.cor}">Cor</span></p>
+                    <div class="preco">R$ <span th:text="${#numbers.formatDecimal(produto.preco, 0, 2, 'COMMA')}">0,00</span></div>
+                    <p><i class="fas fa-box"></i> Estoque: <span th:text="${produto.quantidadeEstoque}">0</span> unidades</p>
+                    <p th:if="${produto.ativo}" style="color:#00C9A7;">✅ Ativo</p>
+                    <p th:unless="${produto.ativo}" style="color:#FF4757;">❌ Inativo</p>
+                    <div class="description" th:text="${produto.descricao}">Descrição</div>
+                    <div class="actions">
+                        <a th:href="@{'/produtos/editar/' + ${produto.id}}" class="btn btn-primary">Editar</a>
+                        <form th:action="@{'/produtos/deletar/' + ${produto.id}}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza?')">Excluir</button>
+                        </form>
+                        <a href="/produtos" class="btn btn-outline">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StyleStore Client - T8</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; }
+        .header { background: linear-gradient(135deg, #6C63FF 0%, #8B7FFF 100%); color: white; padding: 1.5rem; text-align: center; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; }
+        .btn-primary { background: #6C63FF; color: white; }
+        .btn-danger { background: #FF4757; color: white; }
+        .btn-outline { background: transparent; border: 2px solid #6C63FF; color: #6C63FF; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+        .produto-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #eee; }
+        .produto-card img { width: 100%; height: 200px; object-fit: cover; }
+        .produto-card .info { padding: 1rem; }
+        .produto-card .info h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+        .produto-card .info .preco { font-size: 1.2rem; font-weight: 700; color: #6C63FF; }
+        .alert-success { background: #D4F5E9; color: #006644; padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; }
+        .alert-error { background: #FDD8D8; color: #9B2C2C; padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👗 StyleStore - Cliente API</h1>
+        <p>Consumindo a API REST de Produtos (T8)</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-tshirt"></i> Produtos</h2>
+                <a href="/produtos/novo" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Novo Produto
+                </a>
+            </div>
+
+            <div th:if="${success}" class="alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+
+            <div th:if="${produtos != null && !produtos.isEmpty()}">
+                <div class="grid">
+                    <div th:each="produto : ${produtos}" class="produto-card">
+                        <img th:if="${produto.imagens != null && !produto.imagens.isEmpty()}" 
+                             th:src="${produto.imagens[0]}" 
+                             th:alt="${produto.nome}">
+                        <img th:unless="${produto.imagens != null && !produto.imagens.isEmpty()}" 
+                             src="https://via.placeholder.com/300x200/DFE6E9/636E72?text=Sem+Imagem">
+                        <div class="info">
+                            <h3 th:text="${produto.nome}">Nome</h3>
+                            <div class="preco" th:text="'R$ ' + ${#numbers.formatDecimal(produto.preco, 0, 2, 'COMMA')}">R$ 0,00</div>
+                            <p style="color:#636E72;font-size:0.8rem;"><i class="fas fa-box"></i> Estoque: <span th:text="${produto.quantidadeEstoque}">0</span></p>
+                            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+                                <a th:href="@{'/produtos/' + ${produto.id}}" class="btn btn-outline" style="padding:0.3rem 0.8rem;font-size:0.8rem;">Detalhes</a>
+                                <a th:href="@{'/produtos/editar/' + ${produto.id}}" class="btn btn-primary" style="padding:0.3rem 0.8rem;font-size:0.8rem;">Editar</a>
+                                <form th:action="@{'/produtos/deletar/' + ${produto.id}}" method="post">
+                                    <button type="submit" class="btn btn-danger" style="padding:0.3rem 0.8rem;font-size:0.8rem;" onclick="return confirm('Tem certeza?')">Excluir</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${produtos == null || produtos.isEmpty()}" style="text-align:center;padding:2rem;">
+                <h3>Nenhum produto encontrado</h3>
+                <a href="/produtos/novo" class="btn btn-primary">Cadastrar Produto</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
