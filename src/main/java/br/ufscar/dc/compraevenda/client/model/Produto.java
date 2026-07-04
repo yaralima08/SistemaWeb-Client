@@ -3,6 +3,7 @@ package br.ufscar.dc.compraevenda.client.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.List;
 
