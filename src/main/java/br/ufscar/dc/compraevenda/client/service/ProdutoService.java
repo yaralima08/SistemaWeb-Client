@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,35 +22,49 @@ public class ProdutoService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public List<Produto> listarTodos() {
-        try {
-            ResponseEntity<List<Produto>> response = restTemplate.exchange(
-                apiBaseUrl + "/produtos",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Produto>>() {}
-            );
-            return response.getBody();
-        } catch (Exception e) {
-            return Collections.emptyList();
-        }
+        ResponseEntity<List<Produto>> response = restTemplate.exchange(
+            apiBaseUrl + "/produtos",
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<Produto>>() {}
+        );
+        return response.getBody();
     }
 
     public Produto buscarPorId(Long id) {
-        return restTemplate.getForObject(apiBaseUrl + "/produtos/{id}", Produto.class, id);
+        return restTemplate.getForObject(
+            apiBaseUrl + "/produtos/{id}", 
+            Produto.class, 
+            id
+        );
     }
 
     public Produto criar(Produto produto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        
         HttpEntity<Produto> request = new HttpEntity<>(produto, headers);
-        return restTemplate.postForObject(apiBaseUrl + "/produtos", request, Produto.class);
+        
+        return restTemplate.postForObject(
+            apiBaseUrl + "/produtos",
+            request,
+            Produto.class
+        );
     }
 
     public Produto atualizar(Long id, Produto produto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        
         HttpEntity<Produto> request = new HttpEntity<>(produto, headers);
-        restTemplate.exchange(apiBaseUrl + "/produtos/{id}", HttpMethod.PUT, request, Produto.class, id);
+        
+        restTemplate.exchange(
+            apiBaseUrl + "/produtos/{id}",
+            HttpMethod.PUT,
+            request,
+            Produto.class,
+            id
+        );
         return produto;
     }
 
